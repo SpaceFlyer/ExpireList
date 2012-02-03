@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Expire List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="jquery.mobile-1.0/jquery.mobile-1.0.css" />
+<link rel="stylesheet" href="display.css" />
+<script src="jquery.mobile-1.0/jquery.min.js"></script>
+<script src="jquery.mobile-1.0/jquery.mobile-1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+<script type='text/javascript' charset='utf-8' src='jquery.tmpl.js'></script>
+<script type="text/javascript" charset="utf-8" src="js/front.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/back.js"></script>
+</head>
+<body>
+	<div data-role="page" id="welcomepage">
+		<h1>Welcome!</h1>
+	</div>
+	<div data-role="page" id="homepage">
+		<div data-role="header" data-theme="b">
+			<h1>Expire List</h1>
+			<a href="#addpage" data-role="button" data-icon="plus"
+				class="ui-btn-right">Add</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content">
+			<ul data-role="listview" data-split-icon="delete">
+				<li><a href="#editpage"> <img src="images/album-bb.jpg" />
+						<h3>Broken Bells</h3>
+						<p>Added on 12/25/2011</p>
+						<p>
+							<strong class="red-warning">3 months expired</strong>
+						</p></a><a class="deleteButton" href="#">Purchase album</a></li>
+				<li><a href="#editpage"> <img src="images/banana.png" />
+						<h3>Banana</h3>
+						<p>Added on 01/15/2012</p>
+						<p>
+							<strong class="orange-warning">7 days left</strong>
+						</p></a><a class="deleteButton" href="#">Purchase album</a></li>
+			</ul>
+		</div>
+		<!-- /content -->
+		<script type="text/javascript" charset="utf-8">
+			function onConfirmDelete() {
+				alert('Deleted!');
+			}
+
+			$(".deleteButton").bind(
+					"click",
+					function(event, ui) {
+						navigator.notification.confirm(
+								"Confirm delete item XXX?", onConfirmDelete,
+								'Warning', 'Yes,Cancel')
+					});
+		</script>
+		<div data-role="footer" data-theme="b">
+			<div data-role="navbar">
+				<ul>
+					<li><a data-icon="plus" href="#addpage">Add New Item</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /page -->
+	<div data-role="page" id="addpage">
+		<div data-role="header" data-theme="b">
+			<a href="#homepage" data-rel="back" data-icon="back">Cancel</a>
+			<h1>Add Expire Item</h1>
+		</div>
+		<!-- /header -->
+		<div data-role="content">
+			<ul data-role="listview" data-split-icon="plus">
+				<li><a href="#editpage" data-role="button">Add a new type
+						of expire item</a></li>
+				<li data-role="list-divider">Add defined expire item:</li>
+				<li><a href="#editpage"> <img src="images/album-bb.jpg" />
+						<h3>Broken Bells</h3>
+						<p>Added on 12/25/2011</p>
+						<p>
+							<strong class="red-warning">3 months expired</strong>
+						</p></a><a class="deleteButton" href="#homepage">Purchase album</a></li>
+				<li><a href="#editpage"> <img src="images/banana.png" />
+						<h3>Banana</h3>
+						<p>Added on 01/15/2012</p>
+						<p>
+							<strong class="orange-warning">7 days left</strong>
+						</p></a><a class="deleteButton" href="#homepage">Purchase album</a></li>
+			</ul>
+		</div>
+		<!-- /content -->
+	</div>
+	<!--  /page -->
+	<div data-role="page" id="editpage">
+		<div data-role="header" data-theme="b" data-position="inline">
+			<a href="#homepage" data-rel="back" data-icon="back">Cancel</a>
+			<h1>Edit Expire Item</h1>
+			<a href="#homepage" data-icon="check" onclick="saveItem()">Save</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" class="edit-content">
+			<input type="hidden" name="item_id" id="item_id" value="null"/>
+			<input type="hidden" name="added_date" id="added_date" value="null"/>
+			<ul data-role="listview">
+				<li data-role="list-divider">Name:</li>
+				<li><input type="text" name="name" id="name" value="" /></li>
+				<li data-role="list-divider" data-theme="a">Thumbnail:</li>
+				<li>
+					<div class="ui-grid-b">
+						<div class="ui-block-a label"><a href="#" data-role="button" data-inline="true" data-iconpos="notext" data-icon="photo" onclick="takePhoto()">shoot</a></div>
+						<div class="ui-block-b input">
+							<a href="#"><img class="thumb" src="images/banana.png" /></a>
+						</div>
+						<div class="ui-block-c"></div>
+					</div> <!-- /grid-b -->
+				</li>
+				<li data-role="list-divider">Expire in:</li>
+				<li class="center"><input type="range" name="expire"
+					onchange="predictExpireDate();" id="expire" value="10" min="1"
+					max="30" /></li>
+				<li>
+					<fieldset data-role="controlgroup">
+						<input type="radio" name="unit" id="radio-days" value="days"
+							onclick="predictExpireDate();" checked /> <label
+							for="radio-days">Days</label> <input type="radio" name="unit"
+							id="radio-weeks" value="weeks" onclick="predictExpireDate();" />
+						<label for="radio-weeks">Weeks</label> <input type="radio"
+							name="unit" id="radio-months" value="months"
+							onclick="predictExpireDate();" /> <label for="radio-months">Months</label>
+						<input type="radio" name="unit" id="radio-years" value="years"
+							onclick="predictExpireDate();" /> <label for="radio-years">Years</label>
+					</fieldset>
+				</li>
+				<li>
+					<p id="predicted_expire_date">(expires on date: 12/24/2012)</p>
+				</li>
+			</ul>
+		</div>
+		<!-- /content -->
+		<div data-role="footer" data-theme="b">
+			<div data-role="navbar">
+				<ul>
+					<li><a data-icon="check" href="#homepage" onclick="saveItem()">Save</a>
+					</li>
+					<li><a data-icon="delete" data-rel="back" href="#">Cancel</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!--  /page -->
+</body>
+</html>

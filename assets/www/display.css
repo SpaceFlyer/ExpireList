@@ -1,0 +1,41 @@
+.orange-warning{
+	color: orange;
+}
+
+.red-warning{
+	color: red;
+}
+
+.ui-block-a.label{
+	text-align: right;
+}
+
+.ui-block-b.input{
+	text-align: center;
+}
+
+li.center{
+	text-align: center;
+}
+
+.thumb{
+	max-height: 80px;
+	max-width: 80px;
+	text-align: center;
+}
+
+.edit-content{
+	padding: 2em 6% 0em 6%;
+	margin: 0;
+}
+
+.ui-icon-photo {
+	background-image: url("images/photo-icon-small.png");
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	.ui-icon-photo {
+		background-image: url("images/photo-icon-medium.png");
+		background-size: 18px 18px;
+	}
+}

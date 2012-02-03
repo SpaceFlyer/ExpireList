@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Expire List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="jquery.mobile-1.0/jquery.mobile-1.0.css" />
+<link rel="stylesheet" href="display.css" />
+<script src="jquery.mobile-1.0/jquery.min.js"></script>
+<script src="jquery.mobile-1.0/jquery.mobile-1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+</head>
+<body>
+	<div data-role="page" id="homepage">
+
+		<div data-role="header" data-position="fixed" data-theme="b">
+			<h1>Expire List</h1>
+			<a href="#addpage" data-role="button" data-icon="plus"
+				class="ui-btn-right">Add</a>
+		</div>
+		<!-- /header -->
+
+		<div data-role="content">
+			<ul data-role="listview" data-split-icon="delete">
+				<li><a href="#editpage"> <img src="images/album-bb.jpg" />
+						<h3>Broken Bells</h3>
+						<p>Added on 12/25/2011</p>
+						<p>
+							<strong class="red-warning">3 months expired</strong>
+						</p></a> <a class="deleteButton" href="#">Purchase album</a></li>
+				<li><a href="#editpage"> <img src="images/banana.png" />
+						<h3>Banana</h3>
+						<p>Added on 01/15/2012</p>
+						<p>
+							<strong class="orange-warning">7 days left</strong>
+						</p></a> <a class="deleteButton" href="#">Purchase album</a></li>
+			</ul>
+		</div>
+		<!-- /content -->
+
+		<script type="text/javascript" charset="utf-8">
+			function onConfirmDelete() {
+				alert('Deleted!');
+			}
+
+			$(".deleteButton").bind(
+					"click",
+					function(event, ui) {
+						navigator.notification.confirm(
+								"Confirm delete item XXX?", onConfirmDelete,
+								'Warning', 'Yes,Cancel')
+					});
+		</script>
+
+		<div data-role="footer" data-position="fixed" data-theme="b">
+			<div data-role="navbar">
+			<ul>
+			<li>
+			<a data-icon="plus" href="#addpage">Add New Item</a>
+			</li>
+			</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /page -->
+
+	<div data-role="page" id="addpage">
+		<div data-role="header">
+			<h1>Add Expire Item</h1>
+		</div>
+		<!-- /header -->
+	</div>
+	<!--  /page -->
+
+	<div data-role="page" id="editpage">
+		<div data-role="header" data-theme="b" data-position="inline">
+			<a href="#homepage" data-icon="back">Cancel</a>
+			<h1>Edit Expire Item</h1>
+			<a href="#homepage" data-icon="check">Save</a>
+		</div>
+		<!-- /header -->
+	</div>
+	<!--  /page -->
+</body>
+</html>
