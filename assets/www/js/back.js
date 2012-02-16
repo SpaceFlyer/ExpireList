@@ -14,7 +14,7 @@ function initDB(tx) {
 	 * check and set this property. Note that this unique is only over the same
 	 * list.
 	 */
-	tx.executeSql('DROP TABLE IF EXISTS items');
+	//tx.executeSql('DROP TABLE IF EXISTS items');
 	tx
 			.executeSql('CREATE TABLE IF NOT EXISTS items (item_id INTEGER PRIMARY KEY, \
         		list_id INTEGER, \
@@ -27,10 +27,10 @@ function initDB(tx) {
         		is_unique INTEGER, \
         		deleted INTEGER, \
         		FOREIGN KEY(list_id) REFERENCES lists(list_id))');
-	tx.executeSql('DROP TABLE IF EXISTS lists');
+	//tx.executeSql('DROP TABLE IF EXISTS lists');
 	tx
 			.executeSql('CREATE TABLE IF NOT EXISTS lists(id INTEGER PRIMARY KEY, name TEXT)');
-	tx.executeSql('INSERT INTO lists(id, name) VALUES(1, "default")');
+	tx.executeSql('REPLACE INTO lists(id, name) VALUES(1, "default")');
 }
 
 function setDummyItems(tx) {
@@ -64,6 +64,6 @@ function successCB() {
 function onDeviceReady() {
 	db = window.openDatabase("expirelist", "1.0", "Expire List DB", 1000000);
 	db.transaction(initDB, errorCB, successCB);
-	db.transaction(setDummyItems, errorCB, successCB);
+	//db.transaction(setDummyItems, errorCB, successCB);
 	$.mobile.changePage("#homepage");
 }

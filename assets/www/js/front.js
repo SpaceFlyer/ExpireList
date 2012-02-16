@@ -80,7 +80,7 @@ function saveItem(name, thumbnail_url, length, unit) {
 	if (unit == null)
 		unit = $('input:radio[name=unit]:checked').val();
 	var now = new Date();
-	
+
 	if ($('#added_date').val() != 'null')
 		now = new Date($('#added_date').val());
 
@@ -92,18 +92,18 @@ function saveItem(name, thumbnail_url, length, unit) {
 				+ " AND name=? AND thumbnail_url=? AND length=?"
 				+ " AND length_unit=?",
 				[ 1, name, thumbnail_url, length, unit ]);
-		if ($('#item_id').val() != 'null'){
-			tx.executeSql("UPDATE items SET name=?, thumbnail_url=?, " +
-					"added_date=?, expire_date=?, length=?, " +
-					"length_unit=?, is_unique=?, deleted=? " +
-					"WHERE item_id=?", [name, thumbnail_url, added_date,
-					expire_date, length, unit, 1, 0, $('#item_id').val()]);
+		if ($('#item_id').val() != 'null') {
+			tx.executeSql("UPDATE items SET name=?, thumbnail_url=?, "
+					+ "added_date=?, expire_date=?, length=?, "
+					+ "length_unit=?, is_unique=?, deleted=? "
+					+ "WHERE item_id=?", [ name, thumbnail_url, added_date,
+					expire_date, length, unit, 1, 0, $('#item_id').val() ]);
 		} else {
 			tx.executeSql("INSERT INTO items(list_id, name, thumbnail_url, "
 					+ "added_date, expire_date, length, length_unit, "
-					+ "is_unique, deleted) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", [ 1,
-					name, thumbnail_url, added_date, expire_date, length, unit, 1,
-					0 ]);
+					+ "is_unique, deleted) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+					[ 1, name, thumbnail_url, added_date, expire_date, length,
+							unit, 1, 0 ]);
 		}
 	}, errorCB, successCB);
 }
@@ -219,7 +219,8 @@ function showList(urlObj, options) {
 									// and add it to our markup.
 									for ( var i = 0; i < numItems; i++) {
 										var item = {
-											added_date : results.rows.item(i).added_date,
+											added_date : date2shortString(new Date(
+													results.rows.item(i).added_date)),
 											item_id : results.rows.item(i).item_id,
 											name : results.rows.item(i).name,
 											thumbnail_url : results.rows
@@ -274,29 +275,49 @@ function showList(urlObj, options) {
 }
 
 function setEditItem(name, thumbnail_url, length, unit, item_id, added_date) {
+	//See https://forum.jquery.com/topic/how-to-dynamically-change-the-value-of-a-slider
+	$("#editpage").page();
+
 	$('#name').val(name);
 	$('.thumb').attr("src", thumbnail_url);
 	$('#expire').val(length);
 	$('input:radio[name=unit]:checked').attr('checked', false);
 	$('#radio-' + unit).attr('checked', true);
-	
-	if (item_id != null){
+
+	if (item_id != null) {
 		$('#item_id').val(item_id);
 		$('#added_date').val(added_date);
 	} else {
 		$('#item_id').val("null");
 		$('#added_date').val("null");
 	}
+	
+	$("#expire").slider("refresh");
+	$('input:radio').checkboxradio("refresh");
+}
+
+function resetEditItem() {
+	$('#name').val("");
+	$('.thumb').attr("src", "images/bullet-icon.png");
+	$('#expire').val(10);
+	$('input:radio[name=unit]:checked').attr('checked', false);
+	$('#radio-days').attr('checked', true);
+	$('#item_id').val("null");
+	$('#added_date').val("null");
+	$('input:radio').checkboxradio("refresh");
+	$("#expire").slider("refresh");
 }
 
 function takePhoto() {
 	navigator.camera.getPicture(onSuccess, onFail, {
 		quality : 50,
-		destinationType : Camera.DestinationType.FILE_URI
+		destinationType : Camera.DestinationType.FILE_URI,
+		targetWidth : 80,
+		targetHeight : 80
 	});
 
 	function onSuccess(imageURI) {
-		alert(imageURI);
+		// alert(imageURI);
 		$('.thumb').attr("src", imageURI);
 		// $("#editpage").page();
 	}
@@ -349,7 +370,8 @@ function showAddList(urlObj, options) {
 
 									// TODO Why the add a new type button
 									// changes style after the first adding?
-									markup += '<li><a href="#editpage" data-role="button">Add a new type\
+									markup += '<li><a href="#editpage" data-role="button" \
+										onclick="resetEditItem()">Add a new type\
 													of expire item</a></li>\
 												<li data-role="list-divider">Add defined expire item:</li>'
 
