@@ -70,6 +70,27 @@ function calcExpireDate(now, length, unit) {
 	return expire;
 }
 
+function removeNotifications(item_id) {
+	for ( var i = 0; i < 10; i++)
+		plugins.localNotification.cancel(item_id * 10 + i);
+}
+
+function addNotifications(item_id, name, expire_date) {
+	var now = new Date();
+	for ( var i = 0; i < 10; i++) {
+		notification_date = expire_date;
+		notification_date.setDate(expire_date.getDate() + i - 2);
+		if (notification_date < now)
+			continue;
+
+		plugins.localNotification.add({
+			date : notification_date,
+			message : name + " need to be finished!",
+			id : item_id * 10 + i
+		});
+	}
+}
+
 function saveItem(name, thumbnail_url, length, unit) {
 	if (name == null)
 		name = $('#name').val();
@@ -93,6 +114,8 @@ function saveItem(name, thumbnail_url, length, unit) {
 				+ " AND length_unit=?",
 				[ 1, name, thumbnail_url, length, unit ]);
 		if ($('#item_id').val() != 'null') {
+			removeNotifications(parseInt($('#item_id').val()));
+			addNotifications(parseInt($('#item_id').val()), name, expire);
 			tx.executeSql("UPDATE items SET name=?, thumbnail_url=?, "
 					+ "added_date=?, expire_date=?, length=?, "
 					+ "length_unit=?, is_unique=?, deleted=? "
@@ -104,6 +127,11 @@ function saveItem(name, thumbnail_url, length, unit) {
 					+ "is_unique, deleted) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					[ 1, name, thumbnail_url, added_date, expire_date, length,
 							unit, 1, 0 ]);
+			tx.executeSql(
+					"SELECT item_id FROM items ORDER BY item_id DESC LIMIT 1",
+					[], function(tx, results) {
+						addNotifications(results.rows.item(0).item_id, name, expire);
+					}, errorCB);
 		}
 	}, errorCB, successCB);
 }
@@ -275,7 +303,8 @@ function showList(urlObj, options) {
 }
 
 function setEditItem(name, thumbnail_url, length, unit, item_id, added_date) {
-	//See https://forum.jquery.com/topic/how-to-dynamically-change-the-value-of-a-slider
+	// See
+	// https://forum.jquery.com/topic/how-to-dynamically-change-the-value-of-a-slider
 	$("#editpage").page();
 
 	$('#name').val(name);
@@ -291,7 +320,7 @@ function setEditItem(name, thumbnail_url, length, unit, item_id, added_date) {
 		$('#item_id').val("null");
 		$('#added_date').val("null");
 	}
-	
+
 	$("#expire").slider("refresh");
 	$('input:radio').checkboxradio("refresh");
 }
