@@ -360,12 +360,12 @@ function takePhoto() {
 $
 		.template(
 				"addItemTemplate",
-				'<ul><li><a href="#editpage" onclick="setEditItem(\'${name}\', \
-						\'${thumbnail_url}\', ${length}, \'${unit}\')"> <img src="${thumbnail_url}" />\
-					<h3>${name}</h3>\
+				'<ul><li><a href="#homepage" onclick="saveItem(\'${name}\', \'${thumbnail_url}\', ${length}, \'${unit}\')">\
+				<img src="${thumbnail_url}" /><h3>${name}</h3>\
 					<p>Expire on ${expire_date}</p>\
 					<p><strong class="${expire_class}">${expire_string}</strong></p></a>\
-				<a href="#homepage" onclick="saveItem(\'${name}\', \'${thumbnail_url}\', ${length}, \'${unit}\')">\
+				<a href="#editpage" onclick="setEditItem(\'${name}\', \
+				\'${thumbnail_url}\', ${length}, \'${unit}\')"> \
 				whatever</a></li></ul>');
 
 function showAddList(urlObj, options) {
@@ -392,7 +392,7 @@ function showAddList(urlObj, options) {
 									// The markup we are going to inject into
 									// the content
 									// area of the page.
-									markup = '<ul data-role="listview" data-split-icon="plus">',
+									markup = '<ul data-role="listview" data-split-icon="gear">',
 
 									// The number of items in the category.
 									numItems = results.rows.length;
