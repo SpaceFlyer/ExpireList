@@ -30,7 +30,7 @@ li.center{
 }
 
 .ui-icon-photo {
-	background-image: url("images/photo-icon-small.png");
+	background-image: url("images/camera-icon.png");
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {

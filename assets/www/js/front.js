@@ -327,7 +327,7 @@ function setEditItem(name, thumbnail_url, length, unit, item_id, added_date) {
 
 function resetEditItem() {
 	$('#name').val("");
-	$('.thumb').attr("src", "images/bullet-icon.png");
+	$('.thumb').attr("src", "images/default.png");
 	$('#expire').val(10);
 	$('input:radio[name=unit]:checked').attr('checked', false);
 	$('#radio-days').attr('checked', true);
